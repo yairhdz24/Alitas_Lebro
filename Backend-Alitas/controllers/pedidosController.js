@@ -29,7 +29,7 @@ const crearPedido = async (req, res) => {
 
     const idPedido = nuevoPedido.rows[0].id_pedido;
 
-    // Realizar la inserción en el historial_pedidos a través de la función de trigger
+    // Realizar la insercion en el historial_pedidos a través de la funcion de trigger
 
     await client.query('COMMIT');
 
