@@ -1,15 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  RiMenu3Fill,
-  RiAddFill,
-  RiFileList3Fill,
-  RiCloseLine,
-} from "react-icons/ri";
+import { RiMenu3Fill, RiAddFill, RiFileList3Fill, RiCloseLine, } from "react-icons/ri";
 import Sidebar from './components/shared/Sidebar';
 import Car from "./components/shared/Car";
 import Card from "./components/shared/Card";
 import Header from "./components/shared/Header";
+import { Squeleton } from "./components/shared/Squeleton";
 
 function App() {
   const [showMenu, setShowMenu] = useState(false);
@@ -49,14 +45,14 @@ function App() {
 
   const addToCart = (product) => {
     const existingProductIndex = cart.findIndex((p) => p.id === product.id);
-  
+
     if (existingProductIndex !== -1) {
-      // Si el producto ya está en el carrito, incrementa la cantidad
+      // Si el producto ya esta en el carrito, incrementa la cantidad
       const updatedCart = [...cart];
       updatedCart[existingProductIndex].quantity += 1;
       setCart(updatedCart);
     } else {
-      // Si el producto no está en el carrito, agrégalo
+      // Si el producto no esta en el carrito, agregalo
       setCart([...cart, { ...product, quantity: 1 }]);
     }
   };
@@ -76,7 +72,7 @@ function App() {
         removeFromCart={removeFromCart}
         total={calculateTotal()}
       />
-      {/* Mobile menu */}
+      {/* NAV de mobil */}
       <nav className="bg-alitas_beige lg:hidden fixed w-full bottom-0 left-0 text-3xl text-alitas_obs_red p-4 flex items-center justify-between rounded-tl-xl rounded-tr-xl">
         <button className="p-2">
           <RiCloseLine />
@@ -91,28 +87,36 @@ function App() {
           {showMenu ? <RiCloseLine /> : <RiMenu3Fill />}
         </button>
       </nav>
+
       {/* Main */}
       <main className="lg:pl-32 lg:pr-96 pb-20">
         <div className="md:p-8 p-4">
-          {/* Header */}
+    
           <Header />
-          {/* Title Menu */}
+        
           <div className="flex item-center justify-between mb-16">
             <h2 className="text-3xl font-Lilita_One text-alitas_obs_red">Inserte alimentos a la orden</h2>
           </div>
-          { /* Content */}
+
+          { /* Contentido del backend PRODUCTOS */}
+
           <div className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
             {/* Mapear sobre la lista de productos desde la base de datos */}
-            {productos.map((producto) => (
-              <Card
-                key={producto.id}
-                img={producto.imagen}
-                description={producto.descripcionproducto}
-                price={producto.precio}
-                id={producto.id}
-                addToCart={addToCart}
-              />
-            ))}
+            {productos.length > 0 ? (
+              productos.map((producto) => (
+                <Card
+                  key={producto.id}
+                  img={producto.imagen}
+                  description={producto.descripcionproducto}
+                  price={producto.precio}
+                  id={producto.id}
+                  addToCart={addToCart}
+                />
+              ))
+            ) : (
+              <Squeleton/>
+              // <h2 className="text-3xl font-Lilita_One text-alitas_obs_red">Error al cargar productos. Por favor, inténtalo de nuevo más tarde.</h2>
+            )}
           </div>
         </div>
       </main>
