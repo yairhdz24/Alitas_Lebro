@@ -59,6 +59,7 @@ const modificarPedido = async (req, res) => {
       [nuevoEstado, idPedido]
     );
 
+    
     await client.query('COMMIT');
 
     if (result.rows.length > 0) {
