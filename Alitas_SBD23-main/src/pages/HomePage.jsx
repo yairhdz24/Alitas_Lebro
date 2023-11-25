@@ -5,6 +5,14 @@ import Sidebar from '../components/shared/Sidebar';
 import Car from "../components/shared/Car";
 import Card from "../components/shared/Card";
 import Header from "../components/shared/Header";
+import { Fotter } from "../components/Fotter";
+
+//Imagenes 
+import Alitas12Image from '../images/Alitas12.jpg';
+import Alitas8Image from '../images/Alitas8.jpg';
+import BonelessImage from '../images/Boneles.jpg';
+import FrancesaImage from '../images/Francesas.jpg';
+import GajoImage from '../images/Gajo.jpg';
 
 const HomePage = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -61,6 +69,24 @@ const HomePage = () => {
     setCart(updatedCart);
   };
 
+  const getImageForProduct = (imageName) => {
+    // Mapea el nombre de la imagen a la imagen importada correspondiente
+    switch (imageName) {
+      case 'Alitas12':
+        return Alitas12Image;
+      case 'Alitas8':
+        return Alitas8Image;
+      case 'Boneless':
+        return BonelessImage;
+      case 'Francesa':
+        return FrancesaImage;
+      case 'Gajo':
+        return GajoImage;
+      default:
+        return Alitas12Image; // Imagen predeterminada
+    }
+  };
+
   return (
     <div className='bg-alitas_obs_beige w-full min-h-screen'>
       <Sidebar showMenu={showMenu} />
@@ -97,27 +123,30 @@ const HomePage = () => {
             <h2 className="text-3xl font-Lilita_One text-alitas_obs_red">Inserte alimentos a la orden</h2>
           </div>
 
-          { /* Contentido del backend PRODUCTOS */}
+          { /* Contenido del backend PRODUCTOS */}
 
           <div className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
             {/* Mapear sobre la lista de productos desde la base de datos */}
             {productos.length > 0 ? (
               productos.map((producto) => (
                 <Card
-                  key={producto.id}
-                  img={producto.imagen}
-                  description={producto.descripcionproducto}
-                  price={producto.precio}
-                  id={producto.id}
-                  addToCart={addToCart}
-                />
+                key={producto.id}
+                img={getImageForProduct(producto.imagen)}
+                description={producto.descripcionproducto}
+                price={producto.precio}
+                id={producto.id}
+                addToCart={addToCart}
+              />
               ))
             ) : (
-                <h2 className="text-3xl font-Lilita_One text-alitas_obs_red">Error al cargar productos. Por favor, inténtalo de nuevo más tarde.</h2>
+              <h2 className="text-3xl font-Lilita_One text-alitas_obs_red">
+                Error al cargar productos. Por favor, inténtalo de nuevo más tarde.
+              </h2>
             )}
           </div>
         </div>
       </main>
+      <Fotter/>
     </div>
   );
 }
