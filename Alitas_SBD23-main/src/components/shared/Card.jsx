@@ -19,8 +19,8 @@ const Card = (props) => {
   return (
     <div className="bg-alitas_beige p-8 rounded-xl flex flex-col gap-2 items-center text-center text-alitas_black_red">
       <img
-        src={img}
-        alt={description} // Asegurate de tener un texto alternativo para la imagen
+        src={img}  
+        alt={description}
         className="w-40 h-40 object-cover -mt-20 shadow-2xl rounded-3xl"
       />
       <p className="text-xl font-bold text-alitas_obs_red">{description}</p>
