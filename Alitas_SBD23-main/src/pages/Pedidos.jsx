@@ -7,7 +7,7 @@ const Pedidos = () => {
 
   const menu = () => {
     setShowMenu(!showMenu);
-    // Otras lógicas necesarias al hacer clic en el botón del menú
+    // Otras lógicas necesarias al hacer clic en el botón del menu
   };
 
   return (
@@ -40,3 +40,4 @@ const Pedidos = () => {
 };
 
 export default Pedidos;
+ 
