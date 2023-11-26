@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { RiRestaurantFill, RiFileList3Fill, RiUserAddFill, RiContactsBook2Fill, RiFileInfoFill, RiSettings2Fill, RiLogoutBoxFill } from "react-icons/ri";
+import { RiRestaurantFill, RiFileList3Fill, RiContactsBook2Fill, RiHistoryFill } from "react-icons/ri";
 
 const Sidebar = (props) => {
     const { showMenu } = props;
@@ -10,9 +10,9 @@ const Sidebar = (props) => {
     const [activeTab, setActiveTab] = useState('/');
 
     // Actualiza la pestaña activa cuando cambia la ubicación
-    const handleSetActiveTab = (tab) => {
-        setActiveTab(tab);
-    };
+    useEffect(() => {
+        setActiveTab(location.pathname);
+    }, [location.pathname]);
 
     return (
         <div
@@ -29,43 +29,24 @@ const Sidebar = (props) => {
                         />
                         <h1 className='text-xl font-Lilita_One text-alitas_red uppercase text-center'>{"alitas"} <br /> {"le bro"}</h1>
                     </li>
-                    <li className={`bg-${activeTab === '/' ? 'alitas_obs_red' : 'alitas_obs_beige'} p-4 mb-2 rounded-tl-lg rounded-bl-lg`}>
-                        <Link to='/' className={`p-4 flex justify-center rounded-xl text-white ${activeTab === '/' ? 'text-white' : 'text-alitas_obs_red'}`}>
+                    <li className={`bg-${activeTab === '/' ? 'alitas_obs_red' : 'alitas_obs_beige'} p-4 mb-2 rounded-tl-xl rounded-bl-xl group transition-colors`}>
+                    <Link to='/' className={`group-hover:bg-alitas_obs_red p-4 flex justify-center rounded-xl group-hover:text-white transition-colors ${activeTab === '/' ? 'text-white' : 'text-alitas_obs_red'}`} onClick={() => handleSetActiveTab('/')}>
                             <RiRestaurantFill className='text-2xl' />
                         </Link>
                     </li>
-                    <li className={`p-4 rounded-tl-lg group rounded-bl-lg mb-2 transition-colors ${activeTab === '/pedidos' ? 'bg-alitas_obs_red' : 'bg-alitas_obs_beige'}`}>
+                    <li className={`bg-${activeTab === '/pedidos' ? 'alitas_obs_red' : 'alitas_obs_beige'} p-4 mb-2 rounded-tl-xl rounded-bl-xl group transition-colors`}>
                         <Link to='/pedidos' className={`group-hover:bg-alitas_obs_red p-4 flex justify-center rounded-xl group-hover:text-white transition-colors ${activeTab === '/pedidos' ? 'text-white' : 'text-alitas_obs_red'}`} onClick={() => handleSetActiveTab('/pedidos')}>
                             <RiFileList3Fill className='text-2xl' />
                         </Link>
                     </li>
-                    <li className={`p-4 mb-2 group ${activeTab === '/clientes' ? 'group-hover:bg-alitas_obs_red' : 'bg-alitas_obs_beige' }`}>
-                        <Link to='/clientes' className={`group-hover:bg-alitas_obs_red p-4 flex justify-center rounded-xl text-alitas_obs_red group-hover:text-white transition-colors ${activeTab === '/clientes' ? 'text-white' : 'text-alitas_obs_red'}`}>
-                            <RiUserAddFill className='text-2xl' />
-                        </Link>
-                    </li>
-                    <li className={`p-4 rounded-tl-lg rounded-bl-lg mb-2 group transition-colors ${activeTab === '/ruta3' ? 'bg-green-500' : 'bg-alitas_obs_beige'}`}>
-                        <Link to='/ruta3' className={`group-hover:bg-alitas_obs_red p-4 flex justify-center rounded-xl text-alitas_obs_red group-hover:text-white transition-colors ${activeTab === '/ruta3' ? 'text-white' : 'text-alitas_obs_red'}`}>
+                    <li className={`bg-${activeTab === '/clientes' ? 'alitas_obs_red' : 'alitas_obs_beige'} p-4 mb-2 rounded-tl-xl rounded-bl-xl group transition-colors`}>
+                        <Link to='/clientes' className={`group-hover:bg-alitas_obs_red p-4 flex justify-center rounded-xl group-hover:text-white transition-colors ${activeTab === '/clientes' ? 'text-white' : 'text-alitas_obs_red'}`} onClick={() => handleSetActiveTab('/pedidos')}>
                             <RiContactsBook2Fill className='text-2xl' />
                         </Link>
                     </li>
-                    <li className={`p-4 rounded-tl-lg rounded-bl-lg mb-2 group transition-colors ${activeTab === '/ruta4' ? 'bg-alitas_obs_red' : 'bg-alitas_obs_beige'}`}>
-                        <Link to='/ruta4' className={`group-hover:bg-alitas_obs_red p-4 flex justify-center rounded-xl text-alitas_obs_red group-hover:text-white transition-colors ${activeTab === '/ruta4' ? 'text-white' : 'text-alitas_obs_red'}`}>
-                            <RiFileInfoFill className='text-2xl' />
-                        </Link>
-                    </li>
-                    <li className={`p-4 rounded-tl-lg rounded-bl-lg mb-2 group transition-colors ${activeTab === '/ruta5' ? 'bg-alitas_obs_red' : 'bg-alitas_obs_beige'}`}>
-                        <Link to='/ruta5' className={`group-hover:bg-alitas_obs_red p-4 flex justify-center rounded-xl text-alitas_obs_red group-hover:text-white transition-colors ${activeTab === '/ruta5' ? 'text-white' : 'text-alitas_obs_red'}`}>
-                            <RiSettings2Fill className='text-2xl' />
-                        </Link>
-                    </li>
-                </ul>
-            </div>
-            <div>
-                <ul className='pl-4'>
-                    <li className={`p-4 rounded-tl-lg rounded-bl-lg group transition-colors ${activeTab === '/ruta6' ? 'bg-alitas_obs_red' : 'bg-alitas_obs_beige'}`}>
-                        <Link to='/ruta6' className={`group-hover:bg-alitas_obs_red p-4 flex justify-center rounded-xl text-alitas_obs_red group-hover:text-white transition-colors ${activeTab === '/ruta6' ? 'text-white' : 'text-alitas_obs_red'}`} onClick={() => handleSetActiveTab('/ruta6')}>
-                            <RiLogoutBoxFill className='text-2xl' />
+                    <li className={`bg-${activeTab === '/historialpedidos' ? 'alitas_obs_red' : 'alitas_obs_beige'} p-4 mb-2 rounded-tl-xl rounded-bl-xl group transition-colors`}>
+                        <Link to='/historialpedidos' className={`group-hover:bg-alitas_obs_red p-4 flex justify-center rounded-xl group-hover:text-white transition-colors ${activeTab === '/historialpedidos' ? 'text-white' : 'text-alitas_obs_red'}`} onClick={() => handleSetActiveTab('/historialpedidos')}>
+                            <RiHistoryFill className='text-2xl' />
                         </Link>
                     </li>
                 </ul>
