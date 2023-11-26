@@ -70,7 +70,8 @@ const Pedidos = () => {
       {/* Main */}
       <main className="lg:pl-32 lg:pr-96 pb-20">
         <div className="md:p-8 p-4">
-          <h1>CREA UNA TABLA DE PEDIDOS Pedidos</h1>
+          <h1 className="lg:text-3xl text-2xl text-alitas_red font-Lilita_One uppercase"> PEDIDOS </h1>
+          <p className="lg:text-xl text-sm text-alitas_obs_red uppercase">Alitas le bro</p>
           {/* Contenido adicional del componente de pedidos */}
 
           {/* Tabla de pedidos */}
