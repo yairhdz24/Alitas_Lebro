@@ -7,11 +7,10 @@ const pedidosController = require('../controllers/pedidosController');
 
 // Rutas de pedidos
 router.get('/', pedidosController.obtenerPedidos);
+router.get('/:id', pedidosController.obtenerPedidoPorId);
 router.post('/', pedidosController.crearPedido);
-router.put("/modificar/:idPedido", pedidosController.modificarPedido);
-router.delete("/eliminar/:idPedido", pedidosController.eliminarPedido);
+router.patch("/:id", pedidosController.modificarPedido);
+router.delete("/eliminar/:id", pedidosController.eliminarPedido);
 // Otras rutas relacionadas con pedidos, si es necesario
 
 module.exports = router;
-
-// prueba
