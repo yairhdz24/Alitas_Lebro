@@ -44,21 +44,22 @@ const Pedidos = () => {
     setShowMenu(false);
   };
 
-  const confirmarEliminarPedido = (id) => {
+  const confirmarEliminarPedido = (id_pedido) => {
     const confirmacion = window.confirm('¿Estás seguro de que quieres eliminar este pedido?');
 
     if (confirmacion) {
-      handleEliminarPedido(id);
+      handleEliminarPedido(id_pedido);
     }
   };
 
-  const handleEliminarPedido = (id) => {
+  const handleEliminarPedido = (id_pedido) => {
     // Eliminar pedido desde el backend
-    fetch(`http://localhost:3001/pedidos/${id}`, { method: 'DELETE' })
+    fetch(`http://localhost:3001/pedidos/${id_pedido}`, { method: 'DELETE' })
       .then((response) => {
         if (response.status === 200) {
+          console.log(response);
           // Actualizar la lista de pedidos después de la eliminación
-          setPedidos(pedidos.filter((pedido) => pedido.id_pedido !== id));
+          setPedidos(pedidos.filter((pedido) => pedido.id_pedido !== id_pedido));
         } else {
           console.error('Error al eliminar pedido:', response.statusText);
         }
@@ -109,8 +110,7 @@ const Pedidos = () => {
                           <th className="px-4 py-2 text-left">ID Pedido</th>
                           <th className="px-4 py-2 text-left">Fecha</th>
                           <th className="px-4 py-2 text-left">Estado</th>
-                          <th className="px-4 py-2 text-left">Cliente</th>
-                          <th className="px-4 py-2 text-left">Compra</th>
+                          <th className="px-4 py-2 text-left">Total</th>
                           <th className="px-4 py-2 text-left">Acciones</th>
                         </tr>
                       </thead>
@@ -127,13 +127,14 @@ const Pedidos = () => {
                                 </svg>
                                 <span className={`ml-2 ${pedido.estado === 'Entregado' ? 'text-green-500' : (pedido.estado === 'Pendiente' ? 'text-orange-500' : 'text-red-500')}`}>{pedido.estado}</span>
                               </div>
+                                
                               {showMenu && pedido.id_pedido === selectedPedidoId && (
                                 <div className="relative inline-block">
                                   <button
                                     onClick={() => setSelectedPedidoId(null)}
                                     className="absolute inset-0 w-full h-full bg-transparent cursor-default"
                                   ></button>
-                                  <div className="absolute -right-96 z-20 w-auto mb-24 origin-top- bg-white border border-gray-300 rounded-md shadow-xl">
+                                  <div className="absolute -right-96 z-20 w-auto mb-24 origin-top bg-white border border-gray-300 rounded-md shadow-xl">
                                     <button
                                       onClick={() => {
                                         setSelectedPedidoEstado('Entregado');
@@ -156,6 +157,7 @@ const Pedidos = () => {
                                 </div>
                               )}
                             </td>
+                            <td className="px-4 py-4 whitespace-nowrap">{pedido.total}</td>
                             <td className="px-4 py-4 whitespace-nowrap">{pedido.cliente}</td>
                             <td className="px-4 py-4 whitespace-nowrap">{pedido.compra}</td>
                             <td className="px-4 py-4 whitespace-nowrap">
