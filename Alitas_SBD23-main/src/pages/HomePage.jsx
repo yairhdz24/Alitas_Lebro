@@ -19,6 +19,7 @@ const HomePage = () => {
   const [showOrder, setShowOrder] = useState(false);
   const [cart, setCart] = useState([]);
   const [productos, setProductos] = useState([]);
+  
 
   useEffect(() => {
     const fetchProductos = async () => {
@@ -44,25 +45,24 @@ const HomePage = () => {
   };
 
   const calculateTotal = () => {
-    return cart.reduce(
-      (total, product) => total + product.price * product.quantity,
-      0
-    );
+    const validCart = cart.filter(product => !isNaN(product.price) && !isNaN(product.quantity));
+    const total = validCart.reduce((acc, product) => acc + product.price * product.quantity, 0);
+    return isNaN(total) ? 0 : total;
   };
 
-  const addToCart = (product) => {
-    const existingProductIndex = cart.findIndex((p) => p.id === product.id);
+const addToCart = (product) => {
+  const existingProductIndex = cart.findIndex((p) => p.id === product.id);
 
-    if (existingProductIndex !== -1) {
-      // Si el producto ya esta en el carrito, incrementa la cantidad
-      const updatedCart = [...cart];
-      updatedCart[existingProductIndex].quantity += 1;
-      setCart(updatedCart);
-    } else {
-      // Si el producto no esta en el carrito, agregalo
-      setCart([...cart, { ...product, quantity: 1 }]);
-    }
-  };
+  if (existingProductIndex !== -1) {
+    const updatedCart = [...cart];
+    updatedCart[existingProductIndex].quantity += 1;
+    setCart(updatedCart);
+  } else {
+    // Asegúrate de convertir price y quantity a números
+    const newProduct = { ...product, quantity: 1, price: Number(product.price) };
+    setCart([...cart, newProduct]);
+  }
+};
 
   const removeFromCart = (productId) => {
     const updatedCart = cart.filter((product) => product.id !== productId);
