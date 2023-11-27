@@ -89,21 +89,24 @@ const Pedidos = () => {
       <main className="lg:pl-32 lg:pr-96 pb-20">
         <div className="md:p-8 p-4">
          
-          {/* Tabla de pedidos */}
+          {/* Seccion Tabla de pedidos */}
           <section className="container px-4 mx-auto">
             <div className="flex flex-col">
               <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                   <div className="overflow-hidden border border-gray-200 md:rounded-lg">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
+                    <h1 className="lg:text-3xl text-2xl text-alitas_red font-Lilita_One uppercase"> PEDIDOS </h1>
+                    <p className="lg:text-xl text-sm text-alitas_obs_red uppercase">Alitas le bro</p>
+                    {/* Tabla de pedidos */}
+                    <table className="min-w-full bg-white border border-gray-300 shadow-md rounded-md overflow-hidden">
+                      <thead className="bg-alitas_beige">
                         <tr>
-                          <th className="px-4 py-2 text-left">ID Pedido</th>
-                          <th className="px-4 py-2 text-left">Fecha</th>
-                          <th className="px-4 py-2 text-left">Estado</th>
-                          <th className="px-4 py-2 text-left">Cliente</th>
-                          <th className="px-4 py-2 text-left">Compra</th>
-                          <th className="px-4 py-2 text-left">Acciones</th>
+                          <th className="px-4 py-2 text-left text-alitas_obs_red uppercase">ID Pedido</th>
+                          <th className="px-4 py-2 text-left text-alitas_obs_red uppercase">Fecha</th>
+                          <th className="px-4 py-2 text-left text-alitas_obs_red uppercase">Estado</th>
+                          <th className="px-4 py-2 text-left text-alitas_obs_red uppercase">Cliente</th>
+                          <th className="px-4 py-2 text-left text-alitas_obs_red uppercase">Compra</th>
+                          <th className="px-4 py-2 text-left text-alitas_obs_red uppercase">Acciones</th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
