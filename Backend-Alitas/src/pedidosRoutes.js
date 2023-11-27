@@ -10,7 +10,7 @@ router.get('/', pedidosController.obtenerPedidos);
 router.get('/:id', pedidosController.obtenerPedidoPorId);
 router.post('/', pedidosController.crearPedido);
 router.patch("/:id", pedidosController.modificarPedido);
-router.delete("/eliminar/:id", pedidosController.eliminarPedido);
+router.delete("/:id", pedidosController.eliminarPedido);
 // Otras rutas relacionadas con pedidos, si es necesario
 
 module.exports = router;

@@ -33,24 +33,30 @@ const obtenerPedidoPorId = async (req, res) => {
 };
 
 const crearPedido = async (req, res) => {
-  const { idCliente } = req.body;
+  const { idCliente, productos, total  } = req.body;
 
   const client = await pool.connect();
 
   try {
     await client.query("BEGIN");
 
-    // Insertar un nuevo pedido
+    // Calcular el total sumando el precio de cada producto en el carrito
+    // const totalPedido = productos.reduce((total, product) => total + product.price * product.quantity, 0);
+
+    // Insertar un nuevo pedido con el total calculado
     const nuevoPedido = await client.query(
-      "INSERT INTO pedidos (id_cliente, fecha, estado) VALUES ($1, CURRENT_TIMESTAMP, $2) RETURNING id_pedido",
-      [idCliente, "Pendiente"]
+      "INSERT INTO pedidos (id_cliente, fecha, estado, total) VALUES ($1, CURRENT_TIMESTAMP, $2, $3) RETURNING id_pedido",
+      [idCliente, "Pendiente", total ]
     );
 
     const idPedido = nuevoPedido.rows[0].id_pedido;
 
-    // Realizar la insercion en el historial_pedidos a través de la funcion de trigger
+    // Realizar la inserción en el historial_pedidos a través de la función de trigger
 
     await client.query("COMMIT");
+    console.log("Total recibido en el servidor:", total );
+    console.log('Datos del pedido recibidos en el servidor:', req.body);
+
 
     res.status(201).json({ mensaje: "Pedido creado exitosamente", idPedido });
   } catch (error) {
