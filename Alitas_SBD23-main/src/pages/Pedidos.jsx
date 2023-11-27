@@ -44,13 +44,13 @@ const Pedidos = () => {
     setShowMenu(false);
   };
 
-  useEffect(() => {
-    // Obtener pedidos desde el backend al cargar el componente
-    fetch('http://localhost:3001/pedidos')
-      .then((response) => response.json())
-      .then((data) => setPedidos(data))
-      .catch((error) => console.error('Error al obtener pedidos:', error));
-  }, []);
+  const confirmarEliminarPedido = (id) => {
+    const confirmacion = window.confirm('¿Estás seguro de que quieres eliminar este pedido?');
+
+    if (confirmacion) {
+      handleEliminarPedido(id);
+    }
+  };
 
   const handleEliminarPedido = (id) => {
     // Eliminar pedido desde el backend
@@ -65,6 +65,14 @@ const Pedidos = () => {
       })
       .catch((error) => console.error('Error al eliminar pedido:', error));
   };
+
+  useEffect(() => {
+    // Obtener pedidos desde el backend al cargar el componente
+    fetch('http://localhost:3001/pedidos')
+      .then((response) => response.json())
+      .then((data) => setPedidos(data))
+      .catch((error) => console.error('Error al obtener pedidos:', error));
+  }, []);
 
   return (
     <div className="bg-alitas_obs_beige w-full min-h-screen">
@@ -88,7 +96,7 @@ const Pedidos = () => {
       {/* Main */}
       <main className="lg:pl-32 lg:pr-96 pb-20">
         <div className="md:p-8 p-4">
-         
+
           {/* Tabla de pedidos */}
           <section className="container px-4 mx-auto">
             <div className="flex flex-col">
@@ -113,11 +121,11 @@ const Pedidos = () => {
                             <td className="px-4 py-4 whitespace-nowrap">#00{pedido.id_pedido}</td>
                             <td className="px-4 py-4 whitespace-nowrap">{pedido.fecha}</td>
                             <td className="px-4 py-4 whitespace-nowrap">
-                            <div className={`inline-flex items-center px-3 py-1 rounded-full ${pedido.estado === 'Entregado' ? 'bg-green-100/60' : (pedido.estado === 'Pendiente' ? 'bg-orange-100/60' : 'bg-red-100/60')}`}>
+                              <div className={`inline-flex items-center px-3 py-1 rounded-full ${pedido.estado === 'Entregado' ? 'bg-green-100/60' : (pedido.estado === 'Pendiente' ? 'bg-orange-100/60' : 'bg-red-100/60')}`}>
                                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill={`bg-${pedido.estado === 'Entregado' ? 'green' : (pedido.estado === 'Pendiente' ? 'orange' : 'red')}-500`} />
                                 </svg>
-                                <span className={`ml-2 text-${pedido.estado === 'Entregado' ? 'green' : (pedido.estado === 'Pendiente' ? 'orange' : 'red')}-500`}>{pedido.estado}</span>
+                                <span className={`ml-2 ${pedido.estado === 'Entregado' ? 'text-green-500' : (pedido.estado === 'Pendiente' ? 'text-orange-500' : 'text-red-500')}`}>{pedido.estado}</span>
                               </div>
                               {showMenu && pedido.id_pedido === selectedPedidoId && (
                                 <div className="relative inline-block">
@@ -125,13 +133,13 @@ const Pedidos = () => {
                                     onClick={() => setSelectedPedidoId(null)}
                                     className="absolute inset-0 w-full h-full bg-transparent cursor-default"
                                   ></button>
-                                  <div className="absolute -right-96 z-20 w-38 py-2 mt-2 origin-top-right bg-gray-200 rounded-md shadow-xl ">
+                                  <div className="absolute -right-96 z-20 w-auto mb-24 origin-top- bg-white border border-gray-300 rounded-md shadow-xl">
                                     <button
                                       onClick={() => {
                                         setSelectedPedidoEstado('Entregado');
                                         handleModificarPedido();
                                       }}
-                                      className="block px-4 py-3 text-sm text-gray-900 capitalize transition-colors duration-300 transform hover:bg-gray-100 "
+                                      className="block px-4 py-3 text-sm text-gray-900 hover:text-green-600 capitalize transition-colors duration-300 transform hover:bg-gray-100 border-b border-gray-300"
                                     >
                                       Entregado
                                     </button>
@@ -140,7 +148,7 @@ const Pedidos = () => {
                                         setSelectedPedidoEstado('Cancelado');
                                         handleModificarPedido();
                                       }}
-                                      className="block px-4 py-3 text-sm text-gray-900 capitalize transition-colors duration-300 transform hover:bg-gray-100 "
+                                      className="block px-4 py-3 text-sm text-gray-900 hover:text-red-500 capitalize transition-colors duration-300 transform hover:bg-gray-100 border-b border-gray-300"
                                     >
                                       Cancelado
                                     </button>
@@ -151,12 +159,20 @@ const Pedidos = () => {
                             <td className="px-4 py-4 whitespace-nowrap">{pedido.cliente}</td>
                             <td className="px-4 py-4 whitespace-nowrap">{pedido.compra}</td>
                             <td className="px-4 py-4 whitespace-nowrap">
-                              <button onClick={() => handleEditarPedido(pedido.id_pedido)} className="text-alitas_blue hover:underline">
-                                <RiPencilFill />
-                              </button>
-                              <button onClick={() => handleEliminarPedido(pedido.id_pedido)} className="text-red-500 hover:underline ml-2">
-                                <RiDeleteBin6Fill />
-                              </button>
+                              <div className="flex items-center">
+                                <button
+                                  onClick={() => handleEditarPedido(pedido.id_pedido)}
+                                  className="bg-blue-500 text-white px-2 py-2 rounded-full hover:bg-blue-700"
+                                >
+                                  <RiPencilFill />
+                                </button>
+                                <button
+                                  onClick={() => confirmarEliminarPedido(pedido.id_pedido)}
+                                  className="bg-red-500 text-white px-2 py-2 rounded-full hover:bg-red-700 ml-4"
+                                >
+                                  <RiDeleteBin6Fill />
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         ))}
