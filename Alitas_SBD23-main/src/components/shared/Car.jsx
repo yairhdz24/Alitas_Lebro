@@ -106,7 +106,7 @@ const Car = (props) => {
             </select>
 
             <button
-              className="bg-alitas_red text-white text-lg px-4 py-2 rounded-full"
+              className="bg-alitas_red text-white text-lg px-4 py-2 rounded-lg "
               onClick={(e) => {
                 e.preventDefault();
                 setShowRegisterModal(true);
