@@ -91,24 +91,25 @@ const modificarPedido = async (req, res) => {
 
 
 const eliminarPedido = async (req, res) => {
-  const { idPedido } = req.params;
-
-  const client = await pool.connect();
+  const { id } = req.params;
 
   try {
-    await client.query("BEGIN");
+    const deletedPedido = await pool.query(
+      "DELETE FROM pedidos WHERE id_pedido = $1 RETURNING *",
+      [id]
+    );
 
-    // Eliminar el pedido
-    await client.query("DELETE FROM pedidos WHERE id_pedido = $1", [idPedido]);
-
-    await client.query("COMMIT");
-    res.status(200).json({ mensaje: "Pedido eliminado exitosamente" });
+    if (deletedPedido.rows.length > 0) {
+      res.json({
+        message: "pedido eliminado con éxito",
+        deletedPedido: deletedPedido.rows[0],
+      });
+    } else {
+      res.status(404).json({ error: "pedido no encontrado para la eliminación" });
+    }
   } catch (error) {
-    await client.query("ROLLBACK");
-    console.error("Error al eliminar el pedido:", error);
+    console.error("Error al eliminar pedido:", error.message);
     res.status(500).json({ error: "Error interno del servidor" });
-  } finally {
-    client.release();
   }
 };
 
@@ -117,5 +118,5 @@ module.exports = {
   obtenerPedidoPorId,
   crearPedido,
   modificarPedido,
-  eliminarPedido,
+  eliminarPedido
 };

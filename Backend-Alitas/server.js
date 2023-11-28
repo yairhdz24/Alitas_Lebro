@@ -4,6 +4,7 @@ const cors = require("cors");
 const productosRoutes = require("./src/productosRoutes");
 const clientesRoutes = require("./src/clientesRoutes");
 const pedidosRoutes = require("./src/pedidosRoutes");
+const HistorialPedidos = require("./src/HistorialRoutes");
 
 app.use(cors());
 app.use(express.json());
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use("/productos", productosRoutes);
 app.use("/clientes", clientesRoutes);
 app.use("/pedidos", pedidosRoutes);
+app.use("/historial", HistorialPedidos);
 
 const port = process.env.PORT || 3001;
 

@@ -48,13 +48,27 @@ const createCliente = async (req, res) => {
 
 const updateCliente = async (req, res) => {
   const { id } = req.params;
-  const { nombre, telefono } = req.body;
+  const updateFields = req.body;
 
   try {
-    const updatedClient = await pool.query(
-      "UPDATE clientes SET nombre = $1, telefono = $2 WHERE id_clientes = $3 RETURNING *",
-      [nombre, telefono, id]
-    );
+    if (Object.keys(updateFields).length === 0) {
+      // No se proporcionaron campos para actualizar
+      return res.status(400).json({ error: "Ningún campo proporcionado para actualizar" });
+    }
+
+    // Construir dinámicamente la cláusula SET y los valores
+    const setClauses = Object.keys(updateFields)
+      .map((key, index) => `${key} = $${index + 1}`)
+      .join(", ");
+
+    const values = Object.values(updateFields);
+    values.push(id);
+
+    // Construir la consulta SQL con la cláusula SET dinámica
+    const query = `UPDATE clientes SET ${setClauses} WHERE id_cliente = $${values.length} RETURNING *`;
+
+    // Ejecutar la consulta
+    const updatedClient = await pool.query(query, values);
 
     if (updatedClient.rows.length > 0) {
       res.json(updatedClient.rows[0]);
@@ -72,7 +86,7 @@ const deleteCliente = async (req, res) => {
 
   try {
     const deletedClient = await pool.query(
-      "DELETE FROM clientes WHERE id_clientes = $1 RETURNING *",
+      "DELETE FROM clientes WHERE id_cliente = $1 RETURNING *",
       [id]
     );
 
