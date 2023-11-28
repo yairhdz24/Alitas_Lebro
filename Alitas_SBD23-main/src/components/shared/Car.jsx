@@ -63,15 +63,18 @@ const Car = (props) => {
 
       if (responsePedido.ok) {
         const nuevoPedido = await responsePedido.json();
-        setPedidoCreado(`Pedido creado exitosamente. Orden #${nuevoPedido.id_pedido}`);
+        // setPedidoCreado(`Pedido creado exitosamente. Orden #${nuevoPedido.id_pedido}`);
         setNumeroOrden((prevNumeroOrden) => prevNumeroOrden + 1);
+        toast.success("Pedido creado exitosamente. ¡Gracias por su compra!");
         console.log("Pedido realizado exitosamente");
       } else {
         setPedidoCreado("Error al crear el pedido");
+        toast.error("Error al crear el pedido. Inténtelo de nuevo.");
         console.error("Error al realizar el pedido");
       }
     } catch (error) {
       setPedidoCreado("Error de red al crear el pedido");
+      toast.error("Error de red al crear el pedido. Verifique su conexión.");
       console.error("Error de red al realizar el pedido", error);
     }
   };
