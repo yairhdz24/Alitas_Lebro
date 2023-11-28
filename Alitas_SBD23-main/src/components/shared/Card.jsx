@@ -17,16 +17,21 @@ const Card = (props) => {
   };
 
   return (
-    <div className="bg-alitas_beige p-8 rounded-xl flex flex-col gap-2 items-center text-center text-alitas_black_red">
+    <div className="bg-alitas_beige p-10 rounded-xl flex flex-col gap-2 shadow-md items-center text-center text-alitas_black_red">
       <img
-        src={img}  
+        src={img}
         alt={description}
         className="w-40 h-40 object-cover -mt-20 shadow-2xl rounded-3xl"
       />
       <p className="text-xl font-bold text-alitas_obs_red">{description}</p>
-      <span className="text-alitas_black_red text-opacity-70">${price}</span>
-      <button className="text-2xl" onClick={handleAddToCart}>
-        <RiAddFill className="text-alitas_black_red border border-alitas_obs_red rounded-md" />
+      {/* Estilo modificado para que el precio sea más visible */}
+      <span className="text-alitas_black_red text-opacity-70 text-lg font-semibold">${price}</span>
+      {/* Estilo modificado para el botón de agregar */}
+      <button
+        className="mt-3 text-xl bg-alitas_red text-white p-2 rounded-md"
+        onClick={handleAddToCart}
+      >
+        <RiAddFill/>
       </button>
     </div>
   );
