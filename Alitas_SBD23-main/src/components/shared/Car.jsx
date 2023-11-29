@@ -5,11 +5,13 @@ import "react-toastify/dist/ReactToastify.css";
 import RegisterCliente from './RegisterCliente';
 
 const Car = (props) => {
-  const { showOrder, setShowOrder, cart, removeFromCart, total } = props;
+  const { showOrder, setShowOrder, cart, removeFromCart, total: externalTotal } = props;
   const [clientes, setClientes] = useState([]);
   const [selectedClienteId, setSelectedClienteId] = useState("");
   const [pedidoCreado, setPedidoCreado] = useState(null);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [numeroOrden, setNumeroOrden] = useState(1);
+  const [internalTotal, setInternalTotal] = useState(0);
 
   useEffect(() => {
     const fetchClientes = async () => {
@@ -25,6 +27,9 @@ const Car = (props) => {
     fetchClientes();
   }, []);
 
+  useEffect(() => {
+    setInternalTotal(externalTotal);
+  }, [externalTotal]);
 
   const handleRealizarPedido = async () => {
     if (!selectedClienteId) {
@@ -38,6 +43,12 @@ const Car = (props) => {
     }
 
     try {
+      console.log("Datos del pedido:", {
+        idCliente: selectedClienteId,
+        productos: cart.map((product) => ({ id: product.id, cantidad: product.quantity })),
+        total: Number(internalTotal.toFixed(2)),
+      });
+
       const responsePedido = await fetch("http://localhost:3001/pedidos", {
         method: "POST",
         headers: {
@@ -46,20 +57,24 @@ const Car = (props) => {
         body: JSON.stringify({
           idCliente: selectedClienteId,
           productos: cart.map((product) => ({ id: product.id, cantidad: product.quantity })),
-          total: total,
+          total: Number(internalTotal.toFixed(2)),
         }),
       });
 
       if (responsePedido.ok) {
         const nuevoPedido = await responsePedido.json();
-        setPedidoCreado(`Pedido creado exitosamente. Orden #${nuevoPedido.id_pedido}`);
+        // setPedidoCreado(`Pedido creado exitosamente. Orden #${nuevoPedido.id_pedido}`);
+        setNumeroOrden((prevNumeroOrden) => prevNumeroOrden + 1);
+        toast.success("Pedido creado exitosamente. ¡Gracias por su compra!");
         console.log("Pedido realizado exitosamente");
       } else {
         setPedidoCreado("Error al crear el pedido");
+        toast.error("Error al crear el pedido. Inténtelo de nuevo.");
         console.error("Error al realizar el pedido");
       }
     } catch (error) {
       setPedidoCreado("Error de red al crear el pedido");
+      toast.error("Error de red al crear el pedido. Verifique su conexión.");
       console.error("Error de red al realizar el pedido", error);
     }
   };
@@ -75,7 +90,7 @@ const Car = (props) => {
             onClick={() => setShowOrder(false)}
             className="lg:hidden absolute left-4 top-4 p-3 box-content text-alitas_red bg-alitas_obs_beige rounded-full text-2xl"
           />
-          <h1 className="text-2xl mt-4">Orden #1</h1>
+          <h1 className="text-2xl mt-4">Orden #{numeroOrden}</h1>
           <form className="flex items-center gap-2 flex-wrap mt-4 mb-8">
             <h1 className="text-xl text-alitas_obs_red">Cliente:</h1>
             <select
@@ -94,9 +109,9 @@ const Car = (props) => {
             </select>
 
             <button
-              className="bg-alitas_red text-white text-lg px-4 py-2 rounded-full"
+              className="bg-alitas_red text-white text-lg px-4 py-2 rounded-lg "
               onClick={(e) => {
-                e.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
+                e.preventDefault();
                 setShowRegisterModal(true);
               }}
             >
@@ -157,7 +172,7 @@ const Car = (props) => {
           <div className={`bg-alitas_beige absolute w-full bottom-0 left-0 p-4 ${pedidoCreado ? 'mt-2' : ''}`}>
             <div className="flex items-center justify-between">
               <span className="text-alitas_obs_red font-semibold text-lg">Total</span>
-              <span className="text-alitas_red font-bold text-xl">${total.toFixed(2)}</span>
+              <span className="text-alitas_red font-bold text-xl">${internalTotal.toFixed(2)}</span>
             </div>
             <button className="bg-alitas_obs_red text-white text-lg w-full py-3 pl-8 pr-4 mt-4 rounded-xl" onClick={handleRealizarPedido}>
               Realizar pedido
