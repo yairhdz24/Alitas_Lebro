@@ -24,7 +24,7 @@ const Header = () => {
     {/* Tabs */}
     <nav className="text-alitas_beige flex items-center justify-between md:justify-start md:gap-12 border-b border-alitas_beige mb-6">
       <a href="#" 
-        className="relative py-2 before:w-1/2 before:h-[2px] before:absolute before:bg-alitas_red before:left-0
+        className="relative text-xl py-2 before:w-1/2 before:h-[2px] before:absolute before:bg-alitas_red before:left-0
         before:rounded-full before:-bottom-[1px] text-alitas_red"
       >
         Alitas

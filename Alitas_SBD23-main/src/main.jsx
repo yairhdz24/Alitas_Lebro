@@ -1,7 +1,7 @@
 // Main.jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter  as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import Pedidos  from './pages/Pedidos';
 import Clientes from './pages/Clientes';
