@@ -151,7 +151,7 @@ const Clientes = () => {
             </thead>
             <tbody>
               {clientes.map((cliente, index) => (
-                <tr key={cliente.id_cliente}>
+                <tr key={cliente.id_cliente} className="border-b">
                   <td className={`px-4 py-4 whitespace-nowrap text-4xl`} style={{ color: colores[index % colores.length] }}>
                     <RiAccountCircleFill />
                   </td>
@@ -181,9 +181,9 @@ const Clientes = () => {
 
           {/* Formulario de edición */}
           {showMenu && (
-            <div className="fixed inset-0 z-10 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div className="fixed inset-0 z-10 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" >
               <div className="flex items-end justify-end min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-                <span className="hidden sm:inline-block sm:h-screen sm:align-middle" aria-hidden="true">
+                <span className="hidden sm:inline-block sm:h-screen sm:align-middle " aria-hidden="true">
                   &#8203;
                 </span>
                 <div
@@ -192,7 +192,7 @@ const Clientes = () => {
                   aria-modal="true"
                   aria-labelledby="modal-title"
                 >
-                  <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 border-2">
                     <div className="sm:flex sm:items-start">
                       <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                         <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
@@ -200,7 +200,7 @@ const Clientes = () => {
                         </h3>
                         <div className="mt-2">
                           <div className="mb-4">
-                            <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">
+                            <label htmlFor="nombre" className="block text-sm font-medium text-gray-00">
                               Nombre
                             </label>
                             <input

@@ -6,18 +6,21 @@ import { RiCloseLine, RiAddFill, RiFileList3Fill, RiMenu3Fill } from 'react-icon
 const HistorialPedidos = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [historialPedidos, setHistorialPedidos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const GetHistorialPedidos = async () => {
+    try {
+      // Hacer la solicitud para obtener los datos de la tabla de historial de pedidos
+      const response = await axios.get("http://localhost:3001/historial");
+      setHistorialPedidos(response.data);
+    } catch (error) {
+      console.error("Error al obtener el historial de pedidos", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const GetHistorialPedidos = async () => {
-      try {
-        // Hacer la solicitud para obtener los datos de la tabla de historial de pedidos
-        const response = await axios.get("http://localhost:3001/historial");
-        setHistorialPedidos(response.data);
-      } catch (error) {
-        console.error("Error al obtener el historial de pedidos", error);
-      }
-    };
-
     GetHistorialPedidos();
   }, []);
 
@@ -33,8 +36,8 @@ const HistorialPedidos = () => {
         <button className="p-2">
           <RiCloseLine />
         </button>
-        <button className="p-2">
-          <RiAddFill />
+        <button onClick={GetHistorialPedidos} className="p-2">
+          Recargar
         </button>
         <button onClick={menu} className="p-2">
           <RiFileList3Fill />
@@ -45,7 +48,7 @@ const HistorialPedidos = () => {
       </nav>
 
       {/* Main */}
-      <main className="lg:pl-32 lg:pr-96 pb-20">
+      <main className="lg:pl-32 lg:pr-96 pb-20 mt-8">
         <div className="md:p-8 p-4">
           {/* Sección tabla de historial de pedidos */}
           <section className="container px-4 mx-auto">
@@ -54,6 +57,10 @@ const HistorialPedidos = () => {
                 <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                   <div className="overflow-hidden md:rounded-lg">
                     <h1 className="lg:text-3xl text-2xl text-alitas_red font-Lilita_One uppercase"> HISTORIAL DE PEDIDOS </h1>
+                    {/* Indicador de carga */}
+                    {loading && <p>Cargando...</p>}
+                    {/* Mensaje de error */}
+                    {historialPedidos.length === 0 && !loading && <p>Error al cargar el historial de pedidos. Por favor, inténtalo de nuevo más tarde.</p>}
                     {/* Tabla de historial de pedidos */}
                     <table className="min-w-full bg-white border border-gray-300 shadow-md rounded-md overflow-hidden">
                       <thead className="bg-alitas_beige">
